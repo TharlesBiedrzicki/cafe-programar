@@ -7,7 +7,7 @@ void main() {
       home: Inicial()
 
   ));
-  
+
 }
 class Inicial extends StatefulWidget {
   @override
@@ -18,6 +18,8 @@ class _InicialState extends State<Inicial> {
   int cafe = 70 ;
   int linhasCodigo = 0;
   Color cor = Colors.green;
+  bool framework = false;
+  bool comprarFramework = false;
 
   xicaraCafe(){
     setState(() {
@@ -39,10 +41,17 @@ class _InicialState extends State<Inicial> {
   programar() {
     if (cafe > 0) {
       setState(() {
+        if(framework == true) {
+          linhasCodigo = linhasCodigo+5;
+        }else{
           linhasCodigo ++;
+        }
         cafe = cafe - 5;
       });
       xicaraCafe();
+    }
+    if (linhasCodigo == 30){
+      comprarFramework = true;
     }
   }
   addCafe(){
@@ -57,22 +66,24 @@ class _InicialState extends State<Inicial> {
     setState(() {
       cafe = 70 ;
       linhasCodigo = 0;
+      framework =false;
+      comprarFramework = false;
       xicaraCafe();
     });
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BarraSuperior(),
-       bottomNavigationBar: BarraInferior(),
-       body: corpo()
+        appBar: BarraSuperior(),
+        bottomNavigationBar: BarraInferior(),
+        body: corpo()
 
     );
   }
 
 
   Widget BarraSuperior() {
-   return AppBar(
+    return AppBar(
         title: Text(
           "Café programar",
           style: TextStyle(fontSize: 30),
@@ -80,9 +91,9 @@ class _InicialState extends State<Inicial> {
         actions: <Widget>[
           IconButton(icon: Icon(Icons.autorenew),
               onPressed: () {
-           // reset();
+                reset();
               }
-              )
+          )
         ]
     );
   }
@@ -94,42 +105,64 @@ class _InicialState extends State<Inicial> {
         children: <Widget>[
           Padding(
               padding: EdgeInsets.all(60.0),
-            child: Text("Linhas de Codigo", style: TextStyle(color: Colors.black, fontSize: 30.0) )),
+              child: Text("$linhasCodigo Linhas de Codigo", style: TextStyle(color: Colors.black, fontSize: 30.0) )),
           Padding(
               padding: EdgeInsets.fromLTRB(60, 60, 60, 5),
               child:Icon(Icons.local_cafe, size: 100.0, color: cor)),
           Padding(
               padding: EdgeInsets.fromLTRB(60, 5, 60, 60),
-              child: Text(" % Cafe", style: TextStyle(color: Colors.black, fontSize: 30.0)) ),
+              child: Text("$cafe % Cafe", style: TextStyle(color: Colors.black, fontSize: 30.0)) ),
           Padding(
-              padding: EdgeInsets.all(60.0),
+            padding: EdgeInsets.all(60.0),
             child: RaisedButton(
-            onPressed: (){
-           // programar();
+              onPressed: (){
+                programar();
 
-            },
+              },
+              child: Text(
+                "Programar",
+                style: TextStyle(color: Colors.black, fontSize: 30.0),
+
+              ),
+              color: Colors.blue,
+            ),),
+          Padding(padding: EdgeInsets.fromLTRB(100.0,80.0,10.0,40.0  ),
+            child: Visibility(visible: comprarFramework,
+              child: RaisedButton(
+                onPressed: (){
+                  setState(() {
+                    framework = true;
+                    comprarFramework = false;
+                  });
+                },
                 child: Text(
-              "Programar",
-              style: TextStyle(color: Colors.black, fontSize: 30.0),
-
+                  "Comprar framework",
+                  style: TextStyle(color: Colors.black, fontSize: 30.0),
+                ),
+                color: Colors.blue,
+              ),
             ),
-            color: Colors.blue,
-          ),),
+          ),
+        ],
+      ),
+    );
+
   }
 
 
   Widget BarraInferior() {
-   return BottomAppBar(
+    return BottomAppBar(
         child: FlatButton(
           child: IconButton (icon: Icon(Icons.add_box),
               onPressed: () {
-           // addCafe();
+                addCafe();
 
               }
-              ),
+          ),
         )
-       );
+    );
   }
 }
+
 
 
